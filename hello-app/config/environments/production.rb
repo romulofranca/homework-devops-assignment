@@ -12,7 +12,10 @@ Rails.application.configure do
   # Full error reports are disabled.
   config.consider_all_requests_local = false
 
+  # Removed Required for testing purposes.
   config.require_master_key = false
+
+  config.secret_key_base = ENV["SECRET_KEY_BASE"] || "fallback_secret_key_for_dev_only"
 
   # Cache assets for far-future expiry since they are all digest stamped.
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }

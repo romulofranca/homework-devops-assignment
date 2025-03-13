@@ -12,7 +12,11 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
+
+  # Removed Required for testing purposes.
   config.require_master_key = false
+
+  config.secret_key_base = ENV["SECRET_KEY_BASE"] || "fallback_secret_key_for_dev_only"
 
   # Enable server timing.
   config.server_timing = true
