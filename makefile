@@ -1,4 +1,4 @@
-.PHONY: test-all test-docker test-terraform test-helm build deploy build-deploy check-health
+.PHONY: test-all test-docker test-terraform test-helm build deploy build-deploy
 
 build:
 	@echo "🚀 Building Docker image..."
