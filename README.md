@@ -220,26 +220,62 @@ I follow these practices:
 
 ### Monitoring Strategy
 
-**Question:** *How would you approach managing Terraform variables and secrets?*
+**Question:** *Describe at a high level what steps of this infrastructure should be monitored with example metrics to collect.*
 
-Monitoring is key to ensuring high availability and performance. Below are the recommended components and metrics:
+**Answer:**  
+Monitoring is essential to ensure the infrastructure remains healthy and performs optimally. Here’s how I would approach it:
 
-1. **Application-Level Monitoring:**
-   - **Response Time & Latency:** Track how quickly the application responds to requests.
-   - **Error Rates:** Monitor HTTP status codes (4xx, 5xx) to identify potential issues.
-   - **Throughput:** Record the number of requests per second.
-   - **Uptime:** Use health checks (liveness/readiness probes) to ensure continuous availability.
+1. **Application-Level Monitoring:**  
+   - **Response Time & Latency:**  
+     *Metrics:* Average response time, 95th/99th percentile latency.  
+   - **Error Rates:**  
+     *Metrics:* HTTP 4xx and 5xx error counts, error percentages.  
+   - **Throughput:**  
+     *Metrics:* Number of requests per second (RPS).  
+   - **Uptime:**  
+     *Metrics:* Success rate of health checks (liveness/readiness probes).
 
-2. **Container and Pod Monitoring:**
-   - **Resource Utilization:** Monitor CPU and memory usage for each container and pod.
-   - **Restart Counts:** Track pod restarts as an indicator of instability.
-   - **Network I/O:** Measure ingress and egress traffic.
+2. **Container and Pod Monitoring:**  
+   - **Resource Utilization:**  
+     *Metrics:* CPU usage (milli-cores), memory consumption (MiB) per container/pod.  
+   - **Restart Counts:**  
+     *Metrics:* Number of pod restarts or crash loops.  
+   - **Network I/O:**  
+     *Metrics:* Ingress and egress traffic rates (bytes/second).
 
-3. **Kubernetes Cluster Monitoring:**
-   - **Node Health:** Monitor CPU, memory, and disk usage at the node level.
-   - **Pod Scheduling & Status:** Keep tabs on the number of running, pending, or failed pods.
-   - **Cluster Events:** Aggregate events (rollouts, scaling, errors) for a comprehensive view of cluster health.
+3. **Kubernetes Cluster Monitoring:**  
+   - **Node Health:**  
+     *Metrics:* CPU load, memory usage, disk I/O on each node.  
+   - **Pod Scheduling & Status:**  
+     *Metrics:* Count of running, pending, or failed pods.  
+   - **Cluster Events:**  
+     *Metrics:* Frequency of events such as deployment rollouts, scaling actions, or error notifications.
 
-4. **Infrastructure & Deployment Monitoring:**
-   - **Deployment Logs:** Continuously monitor logs generated during Terraform and Helm deployments.
-   - **Alerting:** Configure alerting systems to notify teams when key metrics (e.g., error rates, resource saturation) breach thresholds.
+4. **Infrastructure & Deployment Monitoring:**  
+   - **Deployment Logs:**  
+     *Metrics:* Errors and warnings during Terraform and Helm deployments.  
+   - **Alerting:**  
+     *Metrics:* Threshold breaches (e.g., response times above 500ms, error rates exceeding 1%, resource saturation alerts).
+
+### Testing the Infrastructure
+
+**Question:** *Describe how you would test this infrastructure.*
+
+**Answer:**  
+I take a multi-layered approach to testing the infrastructure to make sure every component is reliable and working as intended. Here’s how I do it:
+
+1. **Terraform Configuration Testing:**  
+   - **Static Validation:** I run `terraform validate` to catch syntax or configuration errors early on.  
+   - **Plan Execution:** I run `terraform plan` to preview the changes before applying them, ensuring that the expected resources (like Kubernetes deployments and services) will be created.
+
+2. **Helm Chart Testing:**  
+   - **Linting:** I run `helm lint` to check the Helm chart for common errors and to ensure it follows best practices.  
+   - **Test Hooks:** After deployment, I execute `helm test` which runs test pods defined in the chart to verify that the application is actually responding as expected (for instance, returning "Hello World v2.1").  
+   - **Manifest Validation:** Additionally, I use tools like conftest to validate the generated Kubernetes manifests against the official API schemas.
+
+3. **Application-Level Testing:**  
+   - **End-to-End Testing:** I send HTTP requests (using curl or Postman) to the deployed service to ensure it always returns "Hello World v2.1".  
+   - **Health Checks:** I rely on the Kubernetes liveness and readiness probes to continuously monitor that the application remains healthy over time.
+
+4. **CI/CD Integration:**  
+   - **Automated Testing:** I integrate these tests into a CI/CD pipeline so that every change triggers a full test suite, from Terraform validation to Helm chart tests and end-to-end application tests. This helps catch issues before they reach production.
