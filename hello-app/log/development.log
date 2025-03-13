@@ -1,0 +1,30 @@
+Started GET "/" for 127.0.0.1 at 2025-03-13 13:07:22 -0300
+Processing by HelloWorldController#index as HTML
+Completed 200 OK in 29ms (Views: 0.4ms | GC: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2025-03-13 13:07:22 -0300
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/text" for 127.0.0.1 at 2025-03-13 13:07:27 -0300
+  
+ActionController::RoutingError (No route matches [GET] "/text"):
+  
+Started GET "/" for 127.0.0.1 at 2025-03-13 13:08:25 -0300
+Processing by HelloWorldController#index as HTML
+Completed 200 OK in 12ms (Views: 0.2ms | GC: 0.0ms)
+
+
+Started GET "/text" for 127.0.0.1 at 2025-03-13 13:08:28 -0300
+Processing by HelloWorldController#index as HTML
+  Parameters: {"path" => "text"}
+Completed 200 OK in 0ms (Views: 0.1ms | GC: 0.0ms)
+
+
+Started GET "/text/ssss" for 127.0.0.1 at 2025-03-13 13:08:31 -0300
+Processing by HelloWorldController#index as HTML
+  Parameters: {"path" => "text/ssss"}
+Completed 200 OK in 0ms (Views: 0.1ms | GC: 0.0ms)
+
+
